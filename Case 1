@@ -1,0 +1,29 @@
+## Case 1 – Country performance
+
+**Business question:** 
+"Which countries are most valuable for the company and why?"
+"Which markets are the most valuable and where should marketing focus?"
+
+**Dataset:** 
+thelook_ecommerce (BigQuery public dataset)
+
+**SQL**
+
+SELECT
+  users.country,
+  ROUND(SUM(items.sale_price), 2) AS revenue,
+  COUNT(DISTINCT orders.order_id) AS number_of_orders,
+  COUNT(DISTINCT orders.user_id) AS number_of_users,
+  ROUND(SUM(items.sale_price) / COUNT(DISTINCT orders.order_id),2) AS AOV
+FROM `practice-yooo.portfolio_practice.orders` AS orders
+JOIN `practice-yooo.portfolio_practice.order_items` AS items
+  ON orders.order_id = items.order_id
+JOIN `practice-yooo.portfolio_practice.users` AS users
+  ON users.id = orders.user_id
+GROUP BY users.country
+ORDER BY revenue DESC;
+
+**Insights**
+China generates the highest revenue and outperforms the United States by nearly USD 1.2 million, making it a key market for future decision-making. 
+At the same time, China has approximately 14,000 more orders than the U.S., with an average order value of USD 85.97, which indicates strong growth potential. 
+While China should be the primary focus of future campaigns, the United States and Brazil remain strategically important markets for performance optimization and revenue stabilization.
