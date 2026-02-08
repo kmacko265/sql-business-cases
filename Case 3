@@ -1,0 +1,20 @@
+Business question
+How long does it take to fulfill orders?
+Is order processing consistent, or are there delays in the system?
+
+SELECT
+  DATE(orders.created_at) AS order_date,
+  COUNT(DISTINCT orders.order_id) AS number_of_orders,
+  ROUND(AVG
+    (TIMESTAMP_DIFF
+      (orders.shipped_at,orders.created_at,DAY)),2) AS avg_fulfillment_days
+FROM `practice-yooo.portfolio_practice.orders` AS orders
+WHERE orders.shipped_at IS NOT NULL
+GROUP BY order_date
+ORDER BY order_date;
+
+Insights
+
+The average fulfillment time shows how efficiently orders are processed from creation to shipment.
+Periods with increased fulfillment duration may indicate operational bottlenecks or capacity constraints.
+Monitoring fulfillment trends over time helps identify process inefficiencies and supports improvements in logistics and customer experience.
