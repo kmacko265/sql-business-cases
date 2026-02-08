@@ -1,0 +1,27 @@
+Business question
+Which countries purchase the widest variety of products?
+Where do customers show broader product interest vs. narrow buying patterns?
+
+SELECT
+  users.country,
+  COUNT(DISTINCT items.product_id) AS unique_products_sold,
+  COUNT(DISTINCT orders.order_id) AS number_of_orders,
+  ROUND(
+    COUNT(DISTINCT items.product_id) 
+    / COUNT(DISTINCT orders.order_id),
+    2
+  ) AS products_per_order
+FROM `practice-yooo.portfolio_practice.orders` AS orders
+JOIN `practice-yooo.portfolio_practice.order_items` AS items
+  ON orders.order_id = items.order_id
+JOIN `practice-yooo.portfolio_practice.users` AS users
+  ON users.id = orders.user_id
+GROUP BY users.country
+HAVING COUNT(DISTINCT orders.order_id) > 500
+ORDER BY products_per_order DESC;
+
+Insights
+
+Markets with a higher number of products per order demonstrate broader basket composition, suggesting stronger cross-selling behavior.
+Countries with lower product diversity per order may rely more on single-item purchases, limiting upselling opportunities.
+Markets with consistently high product diversity are strong candidates for bundled offers and personalized recommendations.
